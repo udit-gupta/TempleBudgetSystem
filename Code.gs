@@ -120,25 +120,34 @@ function createOverviewSheet() {
     overviewSheet = spreadsheet.insertSheet(sheetNameOverview);
     initializeOverviewSheet(overviewSheet);
   }
-
-  updateOverviewContent(overviewSheet); // Call to update the content dynamically
 }
 
 function initializeOverviewSheet(sheet) {
-  sheet.getRange('A1').setValue('Foundation Vision');
-  sheet.getRange('B1').setValue('Temple Goals');
-  sheet.getRange('C1').setValue('To-Do Items');
+  // Apply a color scheme and format the layout
+  const headerColors = ['#FFD700', '#FFA07A', '#90EE90']; // Gold, Light Salmon, Light Green
+  const headers = ['Foundation Vision', 'Temple Goals', 'To-Dos'];
+  const numRowsPerSection = 6; // Height of each section
 
-  // Initialize with default content
-  sheet.getRange('A2').setValue('Empowering with digital tools for efficient management.');
-  sheet.getRange('B2').setValue('Streamlining ShivaGaneshaTemple’s financial processes.');
-  sheet.getRange('C2').setValue('Set up financial tracking and reporting system.');
+  for (let i = 0; i < headers.length; i++) {
+    let startRow = i * numRowsPerSection + 1;
+    sheet.getRange(startRow, 1, numRowsPerSection, 1).merge().setBackground(headerColors[i]).setValue(headers[i]);
+
+    // Placeholder for additional content in each section
+    sheet.getRange(startRow + 1, 2, numRowsPerSection - 1, 4).merge().setValue('Details for ' + headers[i]);
+
+    // Future placeholders for images, managerial information, etc.
+    // For example: sheet.insertImage(imageBlob, 6, startRow + 1);
+  }
+
+  // Set column widths for a balanced layout
+  sheet.setColumnWidths(1, 5, 150); // Adjust as needed
 }
 
-function updateOverviewContent(sheet) {
-  // Dynamically update the content based on the latest information
-  // Placeholder for future logic to fetch and update content
+// Placeholder for future dynamic content update function
+function updateOverviewContent() {
+  // Logic to dynamically update content based on new data or inputs
 }
+
 ///////////////////////////////////////////////////////////
 
 function createIndividualExpenseSheets() {
@@ -256,11 +265,30 @@ function updateOverviewSheet() {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const overviewSheet = spreadsheet.getSheetByName(sheetNameOverview);
 
-  // Existing logic to update the Overview sheet based on individual expenses
-  // ...
-
-  updateOverviewContent(overviewSheet); // Update dynamic content
+  // Check if the Overview sheet exists and is properly initialized
+  if (!overviewSheet) {
+    createOverviewSheet(); // Create and initialize if not present
+  } else {
+    // Update dynamic content such as financial summaries and pie charts
+    updateFinancialSummaries(overviewSheet);
+    updatePieCharts(overviewSheet);
+    // Any additional dynamic content updates can be included here
+  }
 }
+
+function updateFinancialSummaries(sheet) {
+  // Logic to update financial summaries based on data from individual expense sheets
+  // This could involve aggregating data and displaying it in a specific section of the Overview sheet
+  // ...
+}
+
+function updatePieCharts(sheet) {
+  // Logic to create or update pie charts based on the financial data
+  // This includes setting the data range, chart options, and placement on the sheet
+  // ...
+}
+
+
 
 // Future enhancements for dynamic content update can be added here
 

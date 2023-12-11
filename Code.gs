@@ -112,7 +112,6 @@ function createOverviewSheet() {
 */
 
 /////////////////////////////////////////////////////////
-
 function createOverviewSheet() {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   let overviewSheet = spreadsheet.getSheetByName(sheetNameOverview);
@@ -121,11 +120,11 @@ function createOverviewSheet() {
     overviewSheet = spreadsheet.insertSheet(sheetNameOverview);
     initializeOverviewSheet(overviewSheet);
   }
+  addCustomMenu();
 }
 
 function initializeOverviewSheet(sheet) {
   setupSectionsWithAdvancedFeatures(sheet);
-  setupInteractiveElements(sheet);
 }
 
 function setupSectionsWithAdvancedFeatures(sheet) {
@@ -138,19 +137,18 @@ function setupSectionsWithAdvancedFeatures(sheet) {
   for (let range in sections) {
     let section = sections[range];
     sheet.getRange(range).merge().setBackground(section.color).setValue(section.title);
-    // Additional formatting and content setup
     sheet.getRange(range).offset(1, 0, 5, 1).merge().setValue('Details for ' + section.title);
   }
 }
 
-function setupInteractiveElements(sheet) {
+function addCustomMenu() {
   const ui = SpreadsheetApp.getUi();
-  // Example: Adding a button for updating the Vision section
-  const btnVision = sheet.getRange('D1');
-  sheet.insertButton(btnVision, 'Update Vision', 'onUpdateVisionClick');
+  ui.createMenu('Custom Actions')
+    .addItem('Update Vision', 'promptUpdateVision')
+    .addToUi();
 }
 
-function onUpdateVisionClick() {
+function promptUpdateVision() {
   const ui = SpreadsheetApp.getUi();
   const response = ui.prompt('Update Foundation Vision', 'Enter new vision:', ui.ButtonSet.OK_CANCEL);
 
@@ -274,6 +272,46 @@ function createReceiptsSheet() {
 }
 
 //////////////////////////////////////////////
+function updateOverviewSheet() {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const overviewSheet = spreadsheet.getSheetByName(sheetNameOverview);
+
+  if (!overviewSheet) {
+    createOverviewSheet();
+  } else {
+    updateFinancialSummaries(overviewSheet);
+    updatePieCharts(overviewSheet);
+    updateDynamicContentBasedOnUserInputs(overviewSheet);
+  }
+}
+
+function updateFinancialSummaries(sheet) {
+  const totalExpenses = calculateTotalExpenses();
+  const totalIncome = calculateTotalIncome();
+
+  sheet.getRange('D2').setValue('Total Expenses: ' + totalExpenses);
+  sheet.getRange('D3').setValue('Total Income: ' + totalIncome);
+}
+
+function updatePieCharts(sheet) {
+  // Add logic for pie chart creation based on financial data
+}
+
+function updateDynamicContentBasedOnUserInputs(sheet) {
+  // Add logic for dynamically updating content based on user interactions
+}
+
+function calculateTotalExpenses() {
+  // Implement actual logic to calculate total expenses
+  return 0; // Placeholder
+}
+
+function calculateTotalIncome() {
+  // Implement actual logic to calculate total income
+  return 0; // Placeholder
+}
+
+
 
 function updateOverviewSheet() {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
@@ -282,37 +320,37 @@ function updateOverviewSheet() {
   if (!overviewSheet) {
     createOverviewSheet();
   } else {
-    processAndDisplayFinancialData(overviewSheet);
-    updateDynamicContentBasedOnUserInputs(overviewSheet);
+    updateFinancialSummaries(overviewSheet);
+    updatePieCharts(overviewSheet);
   }
 }
 
-function processAndDisplayFinancialData(sheet) {
-  // Example: Display total expenses and income
-  const totalExpenses = calculateTotalExpenses(); // Assume this function exists and calculates total expenses
-  const totalIncome = calculateTotalIncome(); // Assume this function exists and calculates total income
+function updateFinancialSummaries(sheet) {
+  // Logic to display total expenses and income
+  const totalExpenses = calculateTotalExpenses(); 
+  const totalIncome = calculateTotalIncome(); 
 
-  sheet.getRange('B2').setValue('Total Expenses: ' + totalExpenses);
-  sheet.getRange('B3').setValue('Total Income: ' + totalIncome);
+  sheet.getRange('D2').setValue('Total Expenses: ' + totalExpenses);
+  sheet.getRange('D3').setValue('Total Income: ' + totalIncome);
+  // Further implementation for detailed summaries
 }
 
-function updateDynamicContentBasedOnUserInputs(sheet) {
-  // This function can be expanded to include more dynamic updates based on user inputs
-  // For example, updating goals or to-dos based on user interactions
+function updatePieCharts(sheet) {
+  // Logic to create or update pie charts based on financial data
+  // For example: Create a pie chart showing the distribution of expenses
+  // Placeholder for pie chart creation logic
 }
 
+// Placeholder functions for total expenses and income calculations
 function calculateTotalExpenses() {
-  // Logic to calculate total expenses
-  // This is a placeholder function
-  return 0; // Replace with actual calculation
+  // Real implementation needed
+  return 0;
 }
 
 function calculateTotalIncome() {
-  // Logic to calculate total income
-  // This is a placeholder function
-  return 0; // Replace with actual calculation
+  // Real implementation needed
+  return 0;
 }
-
 
 // Future enhancements for dynamic content update can be added here
 

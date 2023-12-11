@@ -112,6 +112,7 @@ function createOverviewSheet() {
 */
 
 /////////////////////////////////////////////////////////
+
 function createOverviewSheet() {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   let overviewSheet = spreadsheet.getSheetByName(sheetNameOverview);
@@ -123,24 +124,41 @@ function createOverviewSheet() {
 }
 
 function initializeOverviewSheet(sheet) {
-  // Set up the layout for Vision, Goals, and To-Dos
-  setupSection(sheet, 'A1:A6', 'Foundation Vision', '#FFD700'); // Gold
-  setupSection(sheet, 'B1:B6', 'Temple Goals', '#FFA07A'); // Light Salmon
-  setupSection(sheet, 'C1:C6', 'To-Dos', '#90EE90'); // Light Green
-
-  // Setup for additional columns like images, manager info
-  setupAdditionalColumns(sheet);
+  setupSectionsWithAdvancedFeatures(sheet);
+  setupInteractiveElements(sheet);
 }
 
-function setupSection(sheet, range, title, bgColor) {
-  sheet.getRange(range).merge().setBackground(bgColor).setValue(title);
-  // More formatting can be added as needed
+function setupSectionsWithAdvancedFeatures(sheet) {
+  const sections = {
+    'A1:A6': { title: 'Foundation Vision', color: '#FFD700' },
+    'B1:B6': { title: 'Temple Goals', color: '#FFA07A' },
+    'C1:C6': { title: 'To-Dos', color: '#90EE90' }
+  };
+
+  for (let range in sections) {
+    let section = sections[range];
+    sheet.getRange(range).merge().setBackground(section.color).setValue(section.title);
+    // Additional formatting and content setup
+    sheet.getRange(range).offset(1, 0, 5, 1).merge().setValue('Details for ' + section.title);
+  }
 }
 
-function setupAdditionalColumns(sheet) {
-  // Add columns for images, focus, manager/CEO, etc.
-  sheet.setColumnWidth(2, 100); // Adjust width for image column
-  // Placeholder for future image insertion and other content
+function setupInteractiveElements(sheet) {
+  const ui = SpreadsheetApp.getUi();
+  // Example: Adding a button for updating the Vision section
+  const btnVision = sheet.getRange('D1');
+  sheet.insertButton(btnVision, 'Update Vision', 'onUpdateVisionClick');
+}
+
+function onUpdateVisionClick() {
+  const ui = SpreadsheetApp.getUi();
+  const response = ui.prompt('Update Foundation Vision', 'Enter new vision:', ui.ButtonSet.OK_CANCEL);
+
+  if (response.getSelectedButton() === ui.Button.OK) {
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const overviewSheet = spreadsheet.getSheetByName(sheetNameOverview);
+    overviewSheet.getRange('A2:A6').setValue(response.getResponseText());
+  }
 }
 
 ///////////////////////////////////////////////////////////
@@ -256,6 +274,7 @@ function createReceiptsSheet() {
 }
 
 //////////////////////////////////////////////
+
 function updateOverviewSheet() {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const overviewSheet = spreadsheet.getSheetByName(sheetNameOverview);
@@ -263,21 +282,37 @@ function updateOverviewSheet() {
   if (!overviewSheet) {
     createOverviewSheet();
   } else {
-    updateFinancialSummaries(overviewSheet);
-    updatePieCharts(overviewSheet);
-    // Additional dynamic updates can be incorporated here
+    processAndDisplayFinancialData(overviewSheet);
+    updateDynamicContentBasedOnUserInputs(overviewSheet);
   }
 }
 
-function updateFinancialSummaries(sheet) {
-  // Implement logic to update financial summaries
-  // This could include aggregating data from expense sheets
+function processAndDisplayFinancialData(sheet) {
+  // Example: Display total expenses and income
+  const totalExpenses = calculateTotalExpenses(); // Assume this function exists and calculates total expenses
+  const totalIncome = calculateTotalIncome(); // Assume this function exists and calculates total income
+
+  sheet.getRange('B2').setValue('Total Expenses: ' + totalExpenses);
+  sheet.getRange('B3').setValue('Total Income: ' + totalIncome);
 }
 
-function updatePieCharts(sheet) {
-  // Implement logic to create or update pie charts
-  // Set data range, chart options, placement, etc.
+function updateDynamicContentBasedOnUserInputs(sheet) {
+  // This function can be expanded to include more dynamic updates based on user inputs
+  // For example, updating goals or to-dos based on user interactions
 }
+
+function calculateTotalExpenses() {
+  // Logic to calculate total expenses
+  // This is a placeholder function
+  return 0; // Replace with actual calculation
+}
+
+function calculateTotalIncome() {
+  // Logic to calculate total income
+  // This is a placeholder function
+  return 0; // Replace with actual calculation
+}
+
 
 // Future enhancements for dynamic content update can be added here
 

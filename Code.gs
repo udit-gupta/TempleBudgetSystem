@@ -117,23 +117,27 @@ function createOverviewSheet() {
   let overviewSheet = spreadsheet.getSheetByName(sheetNameOverview);
 
   if (!overviewSheet) {
-    // Create the Overview sheet if it doesn't exist
     overviewSheet = spreadsheet.insertSheet(sheetNameOverview);
     initializeOverviewSheet(overviewSheet);
   }
 
-  // Additional setup or updates can be added here
-  // For now, this is minimal to avoid breaking existing structure
+  updateOverviewContent(overviewSheet); // Call to update the content dynamically
 }
 
 function initializeOverviewSheet(sheet) {
-  // Initial setup for the Overview sheet
-  // Set up headers, layout, and initial content
   sheet.getRange('A1').setValue('Foundation Vision');
   sheet.getRange('B1').setValue('Temple Goals');
   sheet.getRange('C1').setValue('To-Do Items');
 
-  // More detailed setup can be added here in future iterations
+  // Initialize with default content
+  sheet.getRange('A2').setValue('Empowering with digital tools for efficient management.');
+  sheet.getRange('B2').setValue('Streamlining ShivaGaneshaTemple’s financial processes.');
+  sheet.getRange('C2').setValue('Set up financial tracking and reporting system.');
+}
+
+function updateOverviewContent(sheet) {
+  // Dynamically update the content based on the latest information
+  // Placeholder for future logic to fetch and update content
 }
 ///////////////////////////////////////////////////////////
 
@@ -249,20 +253,16 @@ function createReceiptsSheet() {
 
 //////////////////////////////////////////////
 function updateOverviewSheet() {
-  // Existing logic for updating the Overview sheet
-  // This includes processing data from individual expense sheets and updating the overview
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const overviewSheet = spreadsheet.getSheetByName(sheetNameOverview);
 
-  // Additional logic for updating vision, goals, etc., can be incorporated here
-  // For now, keeping it minimal to ensure stability
+  // Existing logic to update the Overview sheet based on individual expenses
+  // ...
 
-  // Placeholder for future enhancements:
-  // updateOverviewContent();
+  updateOverviewContent(overviewSheet); // Update dynamic content
 }
 
-// Placeholder for a future function to update content like vision, goals, and to-dos
-function updateOverviewContent() {
-  // Future logic to dynamically update content based on new data or inputs
-}
+// Future enhancements for dynamic content update can be added here
 
 //////////////////////////////////////////////
 
